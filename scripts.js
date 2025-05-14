@@ -191,9 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // Contact info form submission
-
-  document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contact-form');
 
   contactForm.addEventListener('submit', function (e) {
@@ -203,20 +201,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    // ✅ Convert to FormData to avoid CORS preflight
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('message', message);
+    const data = {
+      name: name,
+      email: email,
+      message: message
+    };
 
-    // ✅ Use your actual deployed Apps Script URL here
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwy8oEpL5EWRqiG-E6_4wX8At9-dMbbL7D6x7WYnqIKNqY6_Wtr8MgXTz6ec2e8dt6Z/exec';
 
     fetch(scriptURL, {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     })
-    .then(response => response.text())  // Using text() for flexible parsing
+    .then(response => response.text())
     .then(result => {
       console.log('Success:', result);
       alert(`Thanks ${name}, your message has been received!`);
