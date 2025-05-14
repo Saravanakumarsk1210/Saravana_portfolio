@@ -203,26 +203,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    // Send to Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbwy8oEpL5EWRqiG-E6_4wX8At9-dMbbL7D6x7WYnqIKNqY6_Wtr8MgXTz6ec2e8dt6Z/exec', {
+    // ✅ Convert to FormData to avoid CORS preflight
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('message', message);
+
+    // ✅ Use your actual deployed Apps Script URL here
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwy8oEpL5EWRqiG-E6_4wX8At9-dMbbL7D6x7WYnqIKNqY6_Wtr8MgXTz6ec2e8dt6Z/exec';
+
+    fetch(scriptURL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, message }),
+      body: formData,
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
+    .then(response => response.text())  // Using text() for flexible parsing
+    .then(result => {
+      console.log('Success:', result);
       alert(`Thanks ${name}, your message has been received!`);
       contactForm.reset();
     })
     .catch(error => {
-      console.error('Error!', error.message);
+      console.error('Error!', error);
       alert("Oops! Something went wrong.");
     });
   });
 });
+
 
   // Add active class styling to navigation
   document.head.insertAdjacentHTML('beforeend', `
