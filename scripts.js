@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = document.getElementById('message').value.trim();
 
     // Send to Google Apps Script
-    fetch('PASTE_YOUR_SCRIPT_URL_HERE', {
+    fetch('https://script.google.com/macros/s/AKfycbwy8oEpL5EWRqiG-E6_4wX8At9-dMbbL7D6x7WYnqIKNqY6_Wtr8MgXTz6ec2e8dt6Z/exec', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
