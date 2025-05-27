@@ -189,12 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
- document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+  // --------- Contact Form Submission (Send to Google Sheets) ----------
   const contactForm = document.getElementById('contact-form');
 
-  contactForm.addEventListener('submit', function (e) {
+  contactForm?.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const name = document.getElementById('name').value.trim();
@@ -221,23 +220,71 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Success:', result);
       alert(`Thanks ${name}, your message has been received!`);
       contactForm.reset();
+
+      // 🔥 Track in Google Analytics
+      gtag('event', 'form_submit', {
+        event_category: 'engagement',
+        event_label: 'Contact Form Submitted'
+      });
     })
     .catch(error => {
       console.error('Error!', error);
       alert("Oops! Something went wrong.");
     });
   });
-});
 
+  // --------- Google Analytics Event Tracking ----------
+  
+  // CV Download
+  document.querySelector('.cv-download-button')?.addEventListener('click', () => {
+    gtag('event', 'cv_download', {
+      event_category: 'engagement',
+      event_label: 'CV Button'
+    });
+  });
 
-  // Add active class styling to navigation
+  // GitHub Profile Click
+  document.querySelector('a[href*="github.com/Saravanakumarsk1210"]')?.addEventListener('click', () => {
+    gtag('event', 'github_click', {
+      event_category: 'social',
+      event_label: 'GitHub Profile'
+    });
+  });
+
+  // LinkedIn Profile Click
+  document.querySelector('a[href*="linkedin.com/in/saravana-kumar"]')?.addEventListener('click', () => {
+    gtag('event', 'linkedin_click', {
+      event_category: 'social',
+      event_label: 'LinkedIn Profile'
+    });
+  });
+
+  // Email Link Click
+  document.querySelector('a[href^="mailto:"]')?.addEventListener('click', () => {
+    gtag('event', 'email_click', {
+      event_category: 'contact',
+      event_label: 'Email Link'
+    });
+  });
+
+  // Internship Clicks
+  document.querySelectorAll('.internship-link').forEach(link => {
+    link.addEventListener('click', () => {
+      gtag('event', 'internship_click', {
+        event_category: 'experience',
+        event_label: link.innerText.trim()
+      });
+    });
+  });
+
+  // --------- Add active class styling to navigation ----------
   document.head.insertAdjacentHTML('beforeend', `
     <style>
       .nav-links a.active {
         color: var(--primary-green);
         font-weight: 600;
       }
-      
+
       .mobile-nav-toggle {
         background: none;
         border: none;
@@ -246,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor: pointer;
         display: none;
       }
-      
+
       @media (max-width: 768px) {
         .mobile-nav-toggle {
           display: block;
@@ -254,3 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     </style>
   `);
+});
+
+  
